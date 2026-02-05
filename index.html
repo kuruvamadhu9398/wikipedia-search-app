@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wikipedia Search App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Main app container to keep content centered and readable -->
+    <main class="app">
+      <h1>Wikipedia Search App</h1>
+
+      <!-- Search section with input and button controls -->
+      <section class="search-controls" aria-label="Wikipedia search controls">
+        <label for="searchInput" class="visually-hidden">Search Wikipedia</label>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Type a topic (e.g., Space, AI, History)"
+          autocomplete="off"
+        />
+        <button id="searchButton" type="button">Search</button>
+      </section>
+
+      <!-- Message area for loading, empty state, and error messages -->
+      <p id="statusMessage" class="status" aria-live="polite"></p>
+
+      <!-- Results list where each item includes title + snippet -->
+      <section id="results" class="results" aria-label="Search results"></section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
