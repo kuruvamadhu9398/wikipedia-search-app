@@ -7,29 +7,22 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Main app container to keep content centered and readable -->
-    <main class="app">
-      <h1>Wikipedia Search App</h1>
+codex/create-wikipedia-search-app-project-hs6zp1
+    <header>
+      <h1>Wikipedia Search</h1>
+      <button id="themeToggle">🌙</button>
+    </header>
 
-      <!-- Search section with input and button controls -->
-      <section class="search-controls" aria-label="Wikipedia search controls">
-        <label for="searchInput" class="visually-hidden">Search Wikipedia</label>
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Type a topic (e.g., Space, AI, History)"
-          autocomplete="off"
-        />
-        <button id="searchButton" type="button">Search</button>
-      </section>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search Wikipedia…" />
+      <button id="searchBtn">Search</button>
+      <div id="suggestions"></div>
+    </div>
 
-      <!-- Message area for loading, empty state, and error messages -->
-      <p id="statusMessage" class="status" aria-live="polite"></p>
+    <div id="loader" class="loader hidden"></div>
 
-      <!-- Results list where each item includes title + snippet -->
-      <section id="results" class="results" aria-label="Search results"></section>
-    </main>
-
+    <div id="message"></div>
+    <div id="results"></div>
     <script src="script.js"></script>
   </body>
 </html>
