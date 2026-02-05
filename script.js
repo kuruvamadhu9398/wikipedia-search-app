@@ -1,3 +1,4 @@
+codex/create-wikipedia-search-app-project-hs6zp1
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const resultsDiv = document.getElementById('results');
@@ -80,4 +81,5 @@ async function searchWikipedia() {
 searchBtn.addEventListener('click', searchWikipedia);
 searchInput.addEventListener('keyup', (e) => {
   if (e.key === 'Enter') searchWikipedia();
+
 });
