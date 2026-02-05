@@ -1,0 +1,131 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+  padding: 20px;
+}
+
+/* Light + Dark Themes */
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --card-bg: #f7f7f7;
+  --accent: #0078ff;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #ffffff;
+  --card-bg: #1e1e1e;
+  --accent: #4da3ff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+#themeToggle {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 30px auto;
+  display: flex;
+  gap: 10px;
+  position: relative;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+#searchBtn {
+  padding: 12px 20px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#suggestions {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#suggestions div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#suggestions div:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* Loader */
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 5px solid var(--accent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#results {
+  margin-top: 20px;
+}
+
+.result-card {
+  background: var(--card-bg);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.result-card:hover {
+  transform: translateY(-3px);
+}
+
+.result-card a {
+  color: var(--accent);
+  text-decoration: none;
+}
