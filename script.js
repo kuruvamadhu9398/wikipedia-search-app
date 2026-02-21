@@ -1,85 +1,89 @@
-codex/create-wikipedia-search-app-project-hs6zp1
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-const resultsDiv = document.getElementById('results');
-const message = document.getElementById('message');
-const loader = document.getElementById('loader');
-const suggestionsBox = document.getElementById('suggestions');
-const themeToggle = document.getElementById('themeToggle');
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
+const suggestionsList = document.getElementById("suggestionsList");
+const resultsContainer = document.getElementById("resultsContainer");
+const statusMessage = document.getElementById("statusMessage");
+const loader = document.getElementById("loader");
+const themeToggle = document.getElementById("themeToggle");
 
-/* THEME TOGGLE */
-themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
-});
+let timeout = null;
 
-/* FETCH SUGGESTIONS */
-searchInput.addEventListener('input', async () => {
-  const q = searchInput.value.trim();
-  if (!q) return (suggestionsBox.innerHTML = '');
-
-  const res = await fetch(
-    `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${q}&origin=*`
-  );
-  const data = await res.json();
-
-  suggestionsBox.innerHTML = data[1].map((item) => `<div>${item}</div>`).join('');
-
-  document.querySelectorAll('#suggestions div').forEach((div) => {
-    div.addEventListener('click', () => {
-      searchInput.value = div.textContent;
-      suggestionsBox.innerHTML = '';
-      searchWikipedia();
-    });
-  });
-});
-
-/* SEARCH FUNCTION */
-async function searchWikipedia() {
-  const query = searchInput.value.trim();
-  if (!query) {
-    message.textContent = '⚠️ Enter a search term.';
-    return;
-  }
-
-  loader.classList.remove('hidden');
-  resultsDiv.innerHTML = '';
-  message.textContent = '';
-
-  const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&format=json&origin=*`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const results = data.query.search;
-
-    if (results.length === 0) {
-      message.textContent = 'No results found.';
-    } else {
-      resultsDiv.innerHTML = results
-        .map(
-          (r) => `
-                    <div class="result-card">
-                        <h3>${r.title}</h3>
-                        <p>${r.snippet}</p>
-                        <a href="https://en.wikipedia.org/?curid=${r.pageid}" target="_blank">
-                            Read on Wikipedia →
-                        </a>
-                    </div>
-                `
-        )
-        .join('');
+/* ----------------- Fetch Suggestions ----------------- */
+searchInput.addEventListener("input", () => {
+    clearTimeout(timeout);
+    const query = searchInput.value.trim();
+    if (!query) {
+        suggestionsList.classList.add("hidden");
+        return;
     }
-  } catch (error) {
-    message.textContent = '❌ Network error.';
-  }
 
-  loader.classList.add('hidden');
+    timeout = setTimeout(async () => {
+        const url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${query}&limit=5&origin=*`;
+        const response = await fetch(url);
+        const data = await response.json();
+        showSuggestions(data[1]);
+    }, 300);
+});
+
+function showSuggestions(suggestions) {
+    suggestionsList.innerHTML = "";
+    if (suggestions.length === 0) return;
+
+    suggestions.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        li.onclick = () => {
+            searchInput.value = item;
+            suggestionsList.classList.add("hidden");
+            searchWikipedia();
+        };
+        suggestionsList.appendChild(li);
+    });
+
+    suggestionsList.classList.remove("hidden");
 }
 
-/* TRIGGER SEARCH */
-searchBtn.addEventListener('click', searchWikipedia);
-searchInput.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') searchWikipedia();
+/* ----------------- Search Wikipedia ----------------- */
+searchBtn.addEventListener("click", searchWikipedia);
+searchInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") searchWikipedia();
+});
 
+async function searchWikipedia() {
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    suggestionsList.classList.add("hidden");
+    resultsContainer.innerHTML = "";
+    statusMessage.textContent = "";
+    loader.classList.remove("hidden");
+
+    const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&origin=*&srsearch=${query}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    loader.classList.add("hidden");
+
+    if (data.query.search.length === 0) {
+        statusMessage.textContent = "No results found.";
+        return;
+    }
+
+    data.query.search.forEach(item => {
+        const pageUrl = `https://en.wikipedia.org/?curid=${item.pageid}`;
+        const card = `
+            <div class="card">
+                <h3>${item.title}</h3>
+                <p>${item.snippet}...</p>
+                <a href="${pageUrl}" target="_blank">Read More →</a>
+            </div>
+        `;
+        resultsContainer.innerHTML += card;
+    });
+}
+
+/* ----------------- Dark/Light Mode Toggle ----------------- */
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    themeToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
