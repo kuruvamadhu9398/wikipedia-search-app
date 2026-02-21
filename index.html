@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wikipedia Search App</title>
+    <title>Wikipedia Search</title>
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-codex/create-wikipedia-search-app-project-hs6zp1
-    <header>
-      <h1>Wikipedia Search</h1>
-      <button id="themeToggle">🌙</button>
-    </header>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle">🌙</button>
 
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search Wikipedia…" />
-      <button id="searchBtn">Search</button>
-      <div id="suggestions"></div>
+    <div class="container">
+        <h1>Wikipedia Search</h1>
+
+        <!-- Search Box Section -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search Wikipedia..." autocomplete="off" />
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <!-- Suggestions Dropdown -->
+        <ul id="suggestionsList" class="suggestions hidden"></ul>
+
+        <!-- Status Message -->
+        <p id="statusMessage" class="status"></p>
+
+        <!-- Loader -->
+        <div id="loader" class="loader hidden"></div>
+
+        <!-- Results -->
+        <div id="resultsContainer" class="results"></div>
     </div>
 
-    <div id="loader" class="loader hidden"></div>
-
-    <div id="message"></div>
-    <div id="results"></div>
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
